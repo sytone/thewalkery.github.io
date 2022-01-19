@@ -2,8 +2,6 @@
 title: "파이썬 가상 환경"
 date: 2020-04-20 21:00:00 +0900
 categories:
-  - Programming
-tags:
   - Python
 ---
 
@@ -18,30 +16,20 @@ tags:
 - 가상 환경은 이 문제를 프로젝트별 분리된 환경을 제공함으로써 이 문제를 해결한다.
 - 즉, 가상 환경의 파이썬은 파이썬이 실행될 때 찾아지고 실행된다. 그리고 해당 가상 환경에 설치된 패키지들을 실행한다.
 
-### 가상 환경 설치
-
-```bash
-# 설치
-pip install virtualenv
-# 새로운 환경 만들기
-virtualenv <NameOfVirtualEnv>
-# 환경 활성화 하기: 해당 가상환경의 bin directory의 activate 스크립트를 소싱한다.
-source ./<NameOfVirtualEnv>/bin/activate
-# Windows의 경우 cmd창을 띄워서 <NameOfVirtualEnv>\Scripts\activate.bat 실행하면 된다.
-# 비활성화하기
-deactivate
-# directory를 삭제하면 virtualenv가 삭제된다.
-```
-
-### 파이썬3에 가상환경 설치하기
+### 파이썬3 가상환경 생성하기
 
 - 파이썬3는 venv라는 빌트인 모듈이 있다.
-- Virtualenv도 파이썬3에서 사용할 수는 있지만, 파이썬3에서는 venv를 추천한다.
-- venv는 virtualenv와 사용되는 커멘드만 다를 뿐 사용법은 동일하다.
+- 파이썬2에서 사용하던 virtualenv 모듈을 파이썬3에서 사용할 수는 있지만, 파이썬3에서는 venv를 사용하는 것을 추천한다.
 
 ```bash
 # 동작이 제대로 안 될 시, python 대신 python의 full path를 넣어준다.(Ex. C:\Path\to\python.exe -m venv my_env)
-python3 -m venv <VirtualEnvironmentName>
+python3 -m venv <Virtual Environment Name>
+```
+
+### 파이썬3 가상환경 활성화하기
+```bash
+# Linux
+source <Virtual Environment Name>/bin/activate
 ```
 
 ### Windows에 Python 가상 환경 세팅하기
