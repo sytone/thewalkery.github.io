@@ -9,8 +9,6 @@ header:
 date: 2021-12-02 01:00:00 +0900
 categories:
   - High-Speed Digital System Design
-tags:
-  - High-Speed Digital System Design
 ---
 
 # 1. The Importance of Interconnct Design

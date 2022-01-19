@@ -9,8 +9,6 @@ header:
       url: "https://unsplash.com"
 categories:
   - Github Pages
-tags:
-  - Github Pages
 last_modified_at: 2017-10-26T15:12:19-04:00
 ---
 

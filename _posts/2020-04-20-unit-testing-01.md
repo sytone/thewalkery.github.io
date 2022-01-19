@@ -2,10 +2,9 @@
 title: "Unit Testing and Test Driven Development in Python"
 date: 2020-04-20 20:00:00 +0900
 categories:
-  - Programming
-tags:
-  - TDD
+  - Unit Testing
 ---
+
 ## Unit Testing and Test Driven Development in Python
 
 ## What is unit testing?

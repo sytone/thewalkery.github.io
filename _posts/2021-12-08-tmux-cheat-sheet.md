@@ -8,10 +8,7 @@ header:
   caption: "Photo creadit: [**Unsplash**](https://unsplash.com)"
 date: 2021-12-08 23:00:00 +0900
 categories:
-  - linux
-tags:
-  - linux
-  - tmux
+  - Linux
 ---
 # tmux 사용법
 나 같은 경우에는 주로 원격 접속 시 세션 관리를 위해 tmux 프로그램을 사용한다.  
