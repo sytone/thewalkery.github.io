@@ -8,12 +8,9 @@ header:
     - label: "Learn more"
       url: "https://unsplash.com"
 categories:
-  - Layout
-  - Uncategorized
+  - Github Pages
 tags:
-  - edge case
-  - image
-  - layout
+  - Github Pages
 last_modified_at: 2017-10-26T15:12:19-04:00
 ---
 
