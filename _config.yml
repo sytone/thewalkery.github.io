@@ -20,9 +20,9 @@ title_separator          : "-"
 subtitle                 : ""
 name                     : "The Walker"
 description              : ""
-url                      : "https://thewalkerx.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : "https://thewalkery.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
-repository               : "thewalkerx/thewalkerx.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+repository               : "thewalkery/thewalkery.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
@@ -101,7 +101,7 @@ author:
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
-      url: mailto:thewalker0704@gmail.com
+      url: mailto:thewalkery74@gmail.com
     - label: "Website"
       icon: "fas fa-fw fa-link"
       # url: "https://your-website.com"
@@ -113,7 +113,7 @@ author:
       # url: "https://facebook.com/"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/thewalkerx/"
+      url: "https://github.com/thewalkery/"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       # url: "https://instagram.com/"
@@ -129,7 +129,7 @@ footer:
       # url:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/thewalkerx/"
+      url: "https://github.com/thewalkery/"
     - label: "GitLab"
       icon: "fab fa-fw fa-gitlab"
       # url:
