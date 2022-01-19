@@ -8,9 +8,7 @@ header:
   overlay_filter: 0.5
   caption: "Photo creadit: [**Unsplash**](https://unsplash.com)"
 categories:
-  - Markdown
-tags:
-  - Markdown
+  - Github Pages
 toc: true
 toc_sticky: true
 toc_label: "Contents"
