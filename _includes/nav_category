@@ -1,0 +1,32 @@
+{% assign posts_count = site.posts | size %}
+
+{% assign categories_max = 0 %}
+{% for category in site.categories %}
+  {% if category[1].size > categories_max %}
+    {% assign categories_max = category[1].size %}
+  {% endif %}
+{% endfor %}
+
+<nav class="nav__list">
+  <ul class="nav__items">
+    <li>
+      <a href="/year-archive/"><span class="nav__title" style=" padding-left: 0;">All Posts ({{ posts_count }})</span></a>
+    </li>
+  </ul>
+  <input id="ac-toc" name="accordion-toc" type="checkbox" />
+  <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label | default: "Toggle Menu" }}</label>
+  <ul class="nav__items">
+    {% for i in (1..categories_max) reversed %}
+      {% for category in site.categories %}
+        {% assign category_title = category[0] %}
+        {% assign category_id = category[0] | slugify | downcase %}
+        {% assign category_count = category[1].size %}
+        {% if category_count == i %}
+          <li>
+            <a href="/categories/#{{ category_id }}"><span class="nav__sub-title">{{ category_title }} ({{ category_count }})</span></a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</nav>
