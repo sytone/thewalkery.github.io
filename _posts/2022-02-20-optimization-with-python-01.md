@@ -491,5 +491,269 @@ df.mark[df.name=='rafael'].max()
 
     10
 
+## Pandas: Reading Excel
 
-작성 중
+```python
+import pandas as pd
+```
+
+
+```python
+pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='people')
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>rafael</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>gabriel</td>
+      <td>10</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='marks')
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>test</th>
+      <th>mark</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>rafael</td>
+      <td>1</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>gabriel</td>
+      <td>1</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>rafael</td>
+      <td>2</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>gabriel</td>
+      <td>2</td>
+      <td>9</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+dataMarks = pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='marks')
+```
+
+
+```python
+dataPeople = pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='people')
+```
+
+
+```python
+dataAll = dataMarks.set_index('name').join(dataPeople.set_index('name'))
+```
+
+
+```python
+dataAll
+```
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>test</th>
+      <th>mark</th>
+      <th>age</th>
+    </tr>
+    <tr>
+      <th>name</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>gabriel</th>
+      <td>1</td>
+      <td>4</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>gabriel</th>
+      <td>2</td>
+      <td>9</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>rafael</th>
+      <td>1</td>
+      <td>7</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>rafael</th>
+      <td>2</td>
+      <td>8</td>
+      <td>15</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+marks = dataAll.groupby('name').mark.mean()
+```
+
+
+```python
+marks
+```
+
+
+
+
+    name
+    gabriel    6.5
+    rafael     7.5
+    Name: mark, dtype: float64
+
+
+
+
+```python
+marks.to_excel('03_Pandas_reading_Excel_output.xlsx')
+```
+
+## Matplotlib 
+
+```python
+import matplotlib.pyplot as plt
+```
+
+
+```python
+names = ['A', 'B', 'C', 'D']
+salaries = [100, 150, 120, 170]
+```
+
+
+```python
+plt.plot(names, salaries, color='red')
+```
+
+
+
+
+    [<matplotlib.lines.Line2D at 0x21eaf45c6c8>]
+
+
+![plot]({{site.baseurl}}/assets/images/2022-02-21-optimization-with-python-01-01.png)
+    
+
+
+
+```python
+plt.bar(names, salaries, color='green')
+```
+
+
+
+
+    <BarContainer object of 4 artists>
+
+
+
+
+    
+![plot]({{site.baseurl}}/assets/images/2022-02-21-optimization-with-python-01-02.png)
+    
