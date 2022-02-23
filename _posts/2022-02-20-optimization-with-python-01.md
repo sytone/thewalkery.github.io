@@ -78,26 +78,20 @@ python -m jupyter lab
 ## Numpy
 ```python
 import numpy as np
-```
 
-
-```python
 ages = np.array([10, 15, 20, 18])
-```
-
-
-```python
 marks = np.array([9, 8, 5, 7])
-```
 
-
-```python
 print(marks[ages%2==0])
 ```
 
-    [9 5 7]
-    
+<div class="no-highlight" markdown="1">
 
+```
+    [9 5 7]
+```    
+
+</div>
 
 ```python
 print(np.min(ages))
@@ -105,64 +99,69 @@ print(np.max(ages))
 print(np.mean(ages))
 ```
 
+<div class="no-highlight" markdown="1">
+
+```
     10
     20
     15.75
-    
+```
+
+</div>
 
 
 ```python
 print(np.mean(ages[marks>7]))
 ```
 
-    12.5
-    
+<div class="no-highlight" markdown="1">
 
+```
+    12.5
+```
+
+</div>
 
 ```python
 np.cos(1)
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     0.5403023058681398
+```
 
-
+</div>
 
 
 ```python
 x = np.inf
-```
 
-
-```python
 print(x)
 ```
 
+<div class="no-highlight" markdown="1">
+
+```
     inf
+```
+
+</div>
     
 
 ## Pandas
 
 ```python
 import pandas as pd
-```
 
-
-```python
 df = pd.DataFrame({
     'name': ['rafael', 'gabriel', 'rafael', 'michael'],
     'mark': [10, 9, 8, 7],
 })
-```
 
-
-```python
 df
 ```
-
-
 
 
 <div>
@@ -219,15 +218,17 @@ df
 df.mark
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     0    10
     1     9
     2     8
     3     7
     Name: mark, dtype: int64
+```
 
+</div>
 
 
 
@@ -235,60 +236,57 @@ df.mark
 df.mark[2]
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     8
+```
 
-
-
+</div>
 
 ```python
 df['mark']
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     0    10
     1     9
     2     8
     3     7
     Name: mark, dtype: int64
+```
 
-
-
+</div>
 
 ```python
 df.loc[2, 'mark']
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     8
+```
 
-
-
+</div>
 
 ```python
 df.iloc[2, 1]
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     8
+```
 
-
-
+</div>
 
 ```python
 df.T
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -333,31 +331,25 @@ df.T
 </table>
 </div>
 
-
-
-
 ```python
 df.T.loc['mark']
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     0    10
     1     9
     2     8
     3     7
     Name: mark, dtype: object
+```
 
-
-
+</div>
 
 ```python
 df.groupby('name').mean()
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -401,15 +393,9 @@ df.groupby('name').mean()
 </table>
 </div>
 
-
-
-
 ```python
 df.groupby('name').count()
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -453,57 +439,52 @@ df.groupby('name').count()
 </table>
 </div>
 
-
-
-
 ```python
 df.mark[df.name=='rafael']
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     0    10
     2     8
     Name: mark, dtype: int64
+```
 
-
-
+</div>
 
 ```python
 df.mark[df.name=='rafael'].mean()
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     9.0
+```
 
-
+</div>
 
 
 ```python
 df.mark[df.name=='rafael'].max()
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     10
+```
+
+</div>
 
 ## Pandas: Reading Excel
 
 ```python
 import pandas as pd
-```
 
-
-```python
 pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='people')
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -542,15 +523,9 @@ pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='people')
 </table>
 </div>
 
-
-
-
 ```python
 pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='marks')
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -605,29 +580,12 @@ pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='marks')
 </div>
 
 
-
-
 ```python
 dataMarks = pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='marks')
-```
-
-
-```python
 dataPeople = pd.read_excel('03_Pandas_reading_Excel.xlsx', sheet_name='people')
-```
-
-
-```python
 dataAll = dataMarks.set_index('name').join(dataPeople.set_index('name'))
-```
-
-
-```python
 dataAll
 ```
-
-
-
 
 <div>
 <style scoped>
@@ -687,28 +645,20 @@ dataAll
 </table>
 </div>
 
-
-
-
 ```python
 marks = dataAll.groupby('name').mark.mean()
-```
-
-
-```python
 marks
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     name
     gabriel    6.5
     rafael     7.5
     Name: mark, dtype: float64
-
-
-
+```
+</div>
 
 ```python
 marks.to_excel('03_Pandas_reading_Excel_output.xlsx')
@@ -718,23 +668,20 @@ marks.to_excel('03_Pandas_reading_Excel_output.xlsx')
 
 ```python
 import matplotlib.pyplot as plt
-```
 
-
-```python
 names = ['A', 'B', 'C', 'D']
 salaries = [100, 150, 120, 170]
-```
 
-
-```python
 plt.plot(names, salaries, color='red')
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     [<matplotlib.lines.Line2D at 0x21eaf45c6c8>]
+```
+
+</div>
 
 
 ![plot]({{site.baseurl}}/assets/images/2022-02-21-optimization-with-python-01-01.png)
@@ -746,14 +693,13 @@ plt.plot(names, salaries, color='red')
 plt.bar(names, salaries, color='green')
 ```
 
+<div class="no-highlight" markdown="1">
 
-
-
+```
     <BarContainer object of 4 artists>
+```
 
+</div>
 
-
-
-    
 ![plot]({{site.baseurl}}/assets/images/2022-02-21-optimization-with-python-01-02.png)
     
