@@ -343,6 +343,7 @@ print(sum([Pg[g] for g in dataGen['id']]))
 
 </div>
 
+```python
 pg_sum = sum([Pg[g] for g in dataGen['id']])
 # dataLoad['value']는 최적화 Variable이 아니므로 그냥 쓸 수 있음
 model.balance = pyo.Constraint(expr = pg_sum == sum(dataLoad['value']))
@@ -478,3 +479,316 @@ dataGen
 </table>
 </div>
 
+## Print your model, constraints, and summary
+
+- `model.pprint()` 함수를 이용하여 모델 정보를 출력할 수 있다. 하지만 복잡한 모델의 경우 출력량이 많아 보기 불편할 수 있다. `model.변수명.pprint()`를 통해 단일 요소를 확인할 수 있다.
+
+
+## Mixed-Integer Linear Programming (MILP)
+- 아래 예제를 살펴보자. 
+
+- Objecttive
+  - $\max x+y$
+- Constraints
+  - $-x+2y\le7$
+  - $2x+y\le14$
+  - $2x-y\le10$
+  - $0 \le x \le 10$
+  - $0 \le y \le 10$
+  - $x$ as integer
+
+- $x$가 정수여야만 한다는 문제 조건이 있을 수 있다. 이러한 문제를 MILP 라고 부른다.
+
+## MILP - Pyomo
+
+- `model.x = pyo.Var(within=Integers)`
+- `model.x = pyo.Var(within=Binary)`
+
+```python
+import pyomo.environ as pyo
+from pyomo.environ import *
+from pyomo.opt import SolverFactory
+
+model = pyo.ConcreteModel()
+
+model.x = pyo.Var(within=Integers, bounds=(0,10))
+model.y = pyo.Var(bounds=(0,10))
+
+x = model.x
+y = model.y
+
+model.C1 = pyo.Constraint(expr= -x+2*y<=7)
+model.C2 = pyo.Constraint(expr= 2*x+y<=14)
+model.C3 = pyo.Constraint(expr= 2*x-y<=10)
+
+model.obj = pyo.Objective(expr= x+y, sense=maximize)
+
+opt = SolverFactory('glpk')
+opt.solve(model)
+
+model.pprint()
+
+x_value = pyo.value(x)
+y_value = pyo.value(y)
+
+print('x=', x_value)
+print('y=', y_value)
+```
+
+<div class="no-highlight" markdown="1">
+
+```
+2 Var Declarations
+    x : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     0 :   4.0 :    10 : False : False : Integers
+    y : Size=1, Index=None
+        Key  : Lower : Value : Upper : Fixed : Stale : Domain
+        None :     0 :   5.5 :    10 : False : False :  Reals
+
+1 Objective Declarations
+    obj : Size=1, Index=None, Active=True
+        Key  : Active : Sense    : Expression
+        None :   True : maximize : x + y
+
+3 Constraint Declarations
+    C1 : Size=1, Index=None, Active=True
+        Key  : Lower : Body      : Upper : Active
+        None :  -Inf : - x + 2*y :   7.0 :   True
+    C2 : Size=1, Index=None, Active=True
+        Key  : Lower : Body    : Upper : Active
+        None :  -Inf : 2*x + y :  14.0 :   True
+    C3 : Size=1, Index=None, Active=True
+        Key  : Lower : Body    : Upper : Active
+        None :  -Inf : 2*x - y :  10.0 :   True
+
+6 Declarations: x y C1 C2 C3 obj
+x= 4.0
+y= 5.5
+```
+
+</div>
+
+- Var 요약 정보를 보면 x의 Domain이 Integers로 설정된 것을 볼 수 있다.
+
+
+## MILP - Ortools
+
+```python
+from ortools.linear_solver import pywraplp
+
+solver = pywraplp.Solver.CreateSolver('CBC')
+
+# Variable 선언, 0: Lower Bound, 10: Upper Bound
+x = solver.IntVar(0, 10, 'x') # Integer
+y = solver.NumVar(0, 10, 'y')
+
+solver.Add(-x+2*y<=7)
+solver.Add(2*x+y<=14)
+solver.Add(2*x-y<=10)
+
+solver.Maximize(x+y)
+
+results = solver.Solve()
+
+if results == pywraplp.Solver.OPTIMAL:
+    print('Optimal Found')
+
+print('x:', x.solution_value())
+print('y:', y.solution_value())
+```
+
+## MILP - SCIP
+
+```python
+from pyscipop import Model
+
+model = Model('example')
+
+x = model.addVar('x', vtype='INTEGER')
+y = model.addVar('y')
+
+model.setObjective(x+y, sense='maximize')
+
+model.addCons(-x+2*y<=7)
+model.addCons(2*x+y<=14)
+model.addCons(2*x-y<=10)
+
+model.optimize()
+
+sol = model.getBestSol()
+
+print('x=', sol[x])
+print('y=', sol[y])
+```
+
+## Example
+- 스스로 문제를 풀어보자.
+- Objective:
+  - $min \sum_{i=1}^5 x_i + y$
+- Constraints:
+  - $\sum_{i=1}^5 x_i + y \le 20$
+  - $x_i + y \ge 15, \forall i$
+  - $\sum_{i=1}^5 i \cdot x_i \ge 10$
+  - $x_5 + 2y \ge 30$
+  - $x_i, y \ge 0$
+  - $x_i\ integer, \forall i$
+
+```python
+import pyomo.environ as pyo
+from pyomo.environ import *
+from pyomo.opt import SolverFactory
+import pandas as pd
+
+model = pyo.ConcreteModel()
+
+model.x = pyo.Var(range(1, 6), within=Integers, bounds=(0,None))
+model.y = pyo.Var(bounds=(0,None))
+
+model.pprint()
+```
+
+<div class="no-highlight" markdown="1">
+
+```
+    1 Set Declarations
+        x_index : Size=1, Index=None, Ordered=Insertion
+            Key  : Dimen : Domain : Size : Members
+            None :     1 :    Any :    5 : {1, 2, 3, 4, 5}
+    
+    2 Var Declarations
+        x : Size=5, Index=x_index
+            Key : Lower : Value : Upper : Fixed : Stale : Domain
+              1 :     0 :  None :  None : False :  True : Integers
+              2 :     0 :  None :  None : False :  True : Integers
+              3 :     0 :  None :  None : False :  True : Integers
+              4 :     0 :  None :  None : False :  True : Integers
+              5 :     0 :  None :  None : False :  True : Integers
+        y : Size=1, Index=None
+            Key  : Lower : Value : Upper : Fixed : Stale : Domain
+            None :     0 :  None :  None : False :  True :  Reals
+    
+    3 Declarations: x_index x y
+```
+
+</div>
+
+
+```python
+sum_x = sum([model.x[i] for i in range(1, 6)])
+
+print(sum_x)
+```
+
+<div class="no-highlight" markdown="1">
+
+```
+    x[1] + x[2] + x[3] + x[4] + x[5]
+```
+
+</div>
+
+
+```python
+model.obj = pyo.Objective(expr = sum_x + model.y)
+
+model.c1 = pyo.Constraint(expr = sum_x + model.y <= 20)
+model.c2 = pyo.ConstraintList()
+for i in range(1, 6):
+    model.c2.add(expr = model.x[i] + model.y >= 15)
+sum_xi = sum([i*model.x[i] for i in range(1, 6)])
+
+print(sum_xi)
+```
+
+<div class="no-highlight" markdown="1">
+
+```
+    x[1] + 2*x[2] + 3*x[3] + 4*x[4] + 5*x[5]
+```
+
+</div>
+
+
+```python
+model.c3 = pyo.Constraint(expr = sum_xi >= 10)
+model.c4 = pyo.Constraint(expr = model.x[5] + 2*model.y >= 30)
+model.pprint()
+```
+
+<div class="no-highlight" markdown="1">
+
+```
+    2 Set Declarations
+        c2_index : Size=1, Index=None, Ordered=Insertion
+            Key  : Dimen : Domain : Size : Members
+            None :     1 :    Any :    5 : {1, 2, 3, 4, 5}
+        x_index : Size=1, Index=None, Ordered=Insertion
+            Key  : Dimen : Domain : Size : Members
+            None :     1 :    Any :    5 : {1, 2, 3, 4, 5}
+    
+    2 Var Declarations
+        x : Size=5, Index=x_index
+            Key : Lower : Value : Upper : Fixed : Stale : Domain
+              1 :     0 :  None :  None : False :  True : Integers
+              2 :     0 :  None :  None : False :  True : Integers
+              3 :     0 :  None :  None : False :  True : Integers
+              4 :     0 :  None :  None : False :  True : Integers
+              5 :     0 :  None :  None : False :  True : Integers
+        y : Size=1, Index=None
+            Key  : Lower : Value : Upper : Fixed : Stale : Domain
+            None :     0 :  None :  None : False :  True :  Reals
+    
+    1 Objective Declarations
+        obj : Size=1, Index=None, Active=True
+            Key  : Active : Sense    : Expression
+            None :   True : minimize : x[1] + x[2] + x[3] + x[4] + x[5] + y
+    
+    4 Constraint Declarations
+        c1 : Size=1, Index=None, Active=True
+            Key  : Lower : Body                                 : Upper : Active
+            None :  -Inf : x[1] + x[2] + x[3] + x[4] + x[5] + y :  20.0 :   True
+        c2 : Size=5, Index=c2_index, Active=True
+            Key : Lower : Body     : Upper : Active
+              1 :  15.0 : x[1] + y :  +Inf :   True
+              2 :  15.0 : x[2] + y :  +Inf :   True
+              3 :  15.0 : x[3] + y :  +Inf :   True
+              4 :  15.0 : x[4] + y :  +Inf :   True
+              5 :  15.0 : x[5] + y :  +Inf :   True
+        c3 : Size=1, Index=None, Active=True
+            Key  : Lower : Body                                     : Upper : Active
+            None :  10.0 : x[1] + 2*x[2] + 3*x[3] + 4*x[4] + 5*x[5] :  +Inf :   True
+        c4 : Size=1, Index=None, Active=True
+            Key  : Lower : Body       : Upper : Active
+            None :  30.0 : x[5] + 2*y :  +Inf :   True
+    
+    9 Declarations: x_index x y obj c1 c2_index c2 c3 c4
+```
+
+</div>
+
+
+```python
+opt = SolverFactory('cbc', executable='D:\\Solver-CBC\\win32-msvc9\\bin\\cbc.exe')
+results = opt.solve(model)
+
+for i in range(1, 6):
+    print('x[{}]='.format(i), pyo.value(model.x[i]))
+
+print('y=', pyo.value(model.y))
+print('Obj=', pyo.value(model.obj))
+```
+
+<div class="no-highlight" markdown="1">
+
+```
+    x[1]= 0.0
+    x[2]= 0.0
+    x[3]= 0.0
+    x[4]= 0.0
+    x[5]= 2.0
+    y= 15.0
+    Obj= 17.0
+``` 
+
+</div>
