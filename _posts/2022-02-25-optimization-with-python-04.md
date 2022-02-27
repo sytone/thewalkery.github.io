@@ -1,7 +1,7 @@
 ---
 title: "Optimization with Python 04 - Pyomo"
 excerpt: "Optimization with Python 04 - Pyomo"
-date: 2022-02-22 00:00:00 +0900
+date: 2022-02-25 00:00:00 +0900
 header:
   overlay_image: /assets/images/unsplash-thomas-t-math.jpg
   overlay_filter: 0.5
