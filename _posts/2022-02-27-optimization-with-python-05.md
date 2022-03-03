@@ -1,6 +1,6 @@
 ---
-title: "Optimization with Python 05 - Genetic Algorithm and Particle Swarm"
-excerpt: "Optimization with Python 05 - Genetic Algorithm and Particle Swarm"
+title: "Optimization with Python 05 - Genetic Algorithm(Pymoo)"
+excerpt: "Optimization with Python 05 - Genetic Algorithm(Pymoo)"
 date: 2022-02-27 00:00:00 +0900
 header:
   overlay_image: /assets/images/unsplash-thomas-t-math.jpg
@@ -517,3 +517,122 @@ print('\nTotal path:', objFun)
   3. Each constraint is checked, and if this constraint is not met, we define the penalization pen.
   4. The penalization is not a single number. Is 1.000.000 times the distance that the evaluated solution is from the expected constraint.
   5. Finally, we calculate the objective function of the problem and return this objective function and the penalization.
+
+
+# Multi-Objective Problems using NSGA-II 
+## NSGA-II: Introduction
+- NSGA-II(Non-dominated Sorting Genetic Algorithm II)는 Multi-objective 문제를 푸는데 잘 알려진 알고리즘이다.
+
+## Introduction to multi-objective problems
+- multi-objective problem에서 모델링하는 objective function들이 동일한 속성인지 아닌지 알아야 한다.
+- 만약 objective function들이 동일한 속성이라면(예를 들어 "금액") 단순히 objective function들을 더해서 하나의 objective function으로 만들수도 있다.
+- 예를 들어 투자액을 최소화하면서 유지보수 비용을 최소화하고 싶다면 "투자액 + 유지보수 비용"이라는 하나의 objective function을 사용 가능하며, 이는 multi-objective problem이 아니게 된다.
+- 하지만, 예를 들어 당신은 차에 대한 투자 비용을 줄이면서 차의 승차감을 최대화하고 싶다고 하자. 이 경우 평가가 단순하지 않다. 왜냐하면 승차감과 투자 비용은 서로 다른 속성이기 때문이다. 이 경우 두 objective function을 갖게 된다.
+  1. Objective function 1: 투자 금액 최소화
+  2. Objective function 2: 승차감 최대화
+- Multi-objective problem 관련된 특정한 알고리즘과 컨셉이 있다. 중요한 컨셉은 pareto front이다. 당신이 두 개의 objective function f1과 f2가 있다고 하자(두 function 모두 minimize가 목표). 그러면 우리는 모든 가능한 솔루션과 Pareto Front를 아래 그림과 같이 그릴 수 있다.
+
+![pareto front]({{site.baseurl}}/assets/images/2022-02-27-pareto-front.png)
+
+- 모든 가능한 솔루션은 "objective function space" 혹은 "solution space"라고 정의된다. 그리고 Pareto Front는 non-dimonated set solution이다. non-dominated solution은 다른 더 나은 솔루션이 없는 솔루션들을 말한다. 위 그림에서 파란 점의 솔루션들 사이에서는 어떤 솔루션이 다른 어떤 솔루션보다 더 낫다고 말할 수 없다. 우리는 단지 파란 솔루션들이 빨간색 솔루션들보다는 더 좋다고 말할 수 있을 뿐이다. 
+- 최고의 솔루션을 찾기 위해서는 Pareto Front에서 선택 전략을 설정할 수 있다. 예를 들어 (0, 0) 좌표에서 가장 가까운 점, 혹은 Pareto Front이 가운데 점 등.
+
+## How to solve Multi-Objective Problems
+
+- 가장 유명한 알고리즘 중 하나는 Genetic Algorithm의 변형인 NSGA-II이다. NSGA-II를 이용하여 multi-objective problem을 풀기 위해서는 Pymoo 패키지에 관해 읽어보길 바란다([pymoo.org](https://pymoo.org/)).
+- Pymoo는 사용하기 쉬운 패키지로, 우리가 앞에서 배운 GA 개념과 매우 유사하다. 웹사이트의 예제들이 잘 되어있으므로 참고하면 좋다. 
+- 먼저, `pip install pymoo` 명령어로 pymoo를 설치하자.
+- 예제 문제는 다음과 같다.
+- Objectives
+  1. $\min f_1(x) = 100 (x_1^2 + x_2^2)$
+  2. $\min f_2(x) = (x_1 - 1)^2 + x_2^2$
+- Constraints
+  - $g_1(x) = 2(x_1 - 0.1)(x_1 - 0.9) / 0.18 \le 0$
+  - $g_2(x) = -20(x_1-0.4)(x_1-0.6) / 4.8 \le 0$
+  - $-2 \le x_1 \le 2$
+  - $-2 \le x_2 \le 2$
+  - $x \in \R$
+
+
+```python
+import numpy as np
+from pymoo.core.problem import ElementwiseProblem
+from pymoo.factory import get_termination
+from pymoo.algorithms.moo.nsga2 import NSGA2
+from pymoo.factory import get_sampling, get_crossover, get_mutation
+from pymoo.optimize import minimize
+ 
+#definition of the problem
+class MyProblem(ElementwiseProblem):
+     
+    def __init__(self):
+        super().__init__(n_var=2,
+                         n_obj=2,
+                         n_constr=2,
+                         xl=np.array([-2,-2]),
+                         xu=np.array([2,2]))
+ 
+    def _evaluate(self, x, out, *args, **kwargs):
+        f1 = 100 * (x[0]**2 + x[1]**2)
+        f2 = (x[0]-1)**2 + x[1]**2
+ 
+        g1 = 2*(x[0]-0.1) * (x[0]-0.9) / 0.18
+        g2 = - 20*(x[0]-0.4) * (x[0]-0.6) / 4.8
+ 
+        out["F"] = [f1, f2]
+        out["G"] = [g1, g2]
+ 
+problem = MyProblem()
+ 
+#parameters
+algorithm = NSGA2(
+    pop_size=40,
+    n_offsprings=10,
+    sampling=get_sampling("real_random"),
+    crossover=get_crossover("real_sbx", prob=0.9, eta=15),
+    mutation=get_mutation("real_pm", eta=20),
+    eliminate_duplicates=True
+)
+ 
+#termination criteria
+termination = get_termination("n_gen", 40)
+ 
+#solve problem
+res = minimize(problem,
+               algorithm,
+               termination,
+               seed=1,
+               save_history=True,
+               verbose=True)
+ 
+#get solutions
+X = res.X
+F = res.F
+```
+
+- **f1**과 **f2**는 두 개의 minimize 해야하는 objective function이다. max problem을 min problem으로 변환하기 위해서는 단순히 -1을 곱해주면 된다. $\max f1 = \min -f1$
+- **g1**과 **g2**는 constraint들이다. 반드시 ≤ operator를 사용해서 정의해야 한다. ≥ Constraint를 -1을 곱해서 ≤ 형태의 Constraint로 변경할 수 있다. 예를 들어 $g1 \ge A$는 $-g1 \le -A$로 변환할 수 있다.
+- Equality(=) 조건에 대해서는 두 개의 Constraint를 사용하거나(≤ 와 ≥), 이전 강의에서 사용한 방식처럼 Penalization을 적용할 수도 있다.
+- `super().__init__` 시 파라미터 정의가 필요하다.
+  - `n_var`: 문제의 변수 갯수
+  - `n_obj`: 문제의 Objective functino 갯수
+  - `xl`: 변수 X의 lower bound
+  - `xu`: 변수 X의 upper bound
+- 휴리스틱/진화 알고리즘을 사용하는 많은 패키지에서는 모든 variable들을 하나의 array로 변환해야한다.
+- 예를 들어, Z1, Z2, Z3, Y라는 Variable이 있다고 가정하자. 만약 Pyomo를 사용했다면 Z와 Y라는 두 가지 변수를 사용했겠지만, Pymoo에서는 X1, X2, X3, X4로 사용하자.(X1=Z1, X2=Z2, X3=Z3, Y=Z4)
+
+## Best Solution 정의하기
+
+두 개의 목적 함수를 가지고 있다면, Pareto Front를 그래프로 나타낼 수 있다.
+
+```python
+import matplotlib.pyplot as plt
+plt.figure(figsize=(7, 5))
+plt.scatter(F[:, 0], F[:, 1], s=30, facecolors='none', edgecolors='blue')
+plt.title("Objective Space")
+plt.show()
+```
+
+![pareto front]({{site.baseurl}}/assets/images/2022-02-27-optimization-with-python-05-pareto-front.png)
+
+Best Solution을 정의하기 위해서는 **X**와 **F**를 기준으로 사용할 수 있다. 예를 들어 (0, 0) 원점에 가장 가까운 점 (F1, F2)를 찾을 수 있다.
