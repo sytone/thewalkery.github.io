@@ -551,7 +551,7 @@ print('\nTotal path:', objFun)
   - $g_2(x) = -20(x_1-0.4)(x_1-0.6) / 4.8 \le 0$
   - $-2 \le x_1 \le 2$
   - $-2 \le x_2 \le 2$
-  - $x \in \R$
+  - $x \in \mathbb{R}$
 
 
 ```python
