@@ -16,8 +16,6 @@ mathjax: "true"
 **Warning Notice:** 본 강의는 파이썬을 이용하여 최적화 문제를 푸는 것에 집중합니다. 파이썬 언어의 기초는 다루지 않으므로 주의하십시오.
 {: .notice--warning}
 
-`pip install pyswarm`
-
 # Particle Swarm Optimization
 - 군집 기반 최적화는 수리적 최적화의 한 방법론으로써, 군집 기반 최적화에서는 여러 개의 optimizer가 서로 정보를 교환하며 동시에 최적화를 수행한다.
 
