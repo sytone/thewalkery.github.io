@@ -19,7 +19,7 @@ mathjax: "true"
 # Constraint Programming (CP)
 - 문제의 Objective function 보다 Constraint가 중요할 때 사용
 - Constraint가 Tight할 때
-- Objective function이 비슷한 수준일 때
+- Objective function이 서로 비슷비슷한 수준일 때
 
 # Ortools
 
