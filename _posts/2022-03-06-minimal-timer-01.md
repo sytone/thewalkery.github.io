@@ -1,6 +1,6 @@
 ---
-title: "Qt Project - Minimal Timer 01"
-excerpt: "Qt Project - Minimal Timer 01"
+title: "Qt Project - Minimal Timer"
+excerpt: "Qt Project - Minimal Timer"
 date: 2022-03-06 10:00:00 +0900
 header:
   overlay_image: /assets/images/unsplash-emile-perron.jpg
