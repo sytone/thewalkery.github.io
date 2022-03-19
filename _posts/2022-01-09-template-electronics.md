@@ -1,6 +1,6 @@
 ---
-title: "Post Template 01 - Electronics"
-excerpt: "Post Template 01 - Electronics"
+title: "Post Template - Electronics"
+excerpt: "Post Template - Electronics"
 date: 2022-01-09 17:00:00 +0900
 header:
   overlay_image: /assets/images/unsplash-Umberto.jpg
@@ -9,4 +9,4 @@ header:
 categories:
   - Template
 ---
-# Post Template 01 - Electronics
+# Post Template - Electronics

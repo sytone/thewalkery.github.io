@@ -1,6 +1,6 @@
 ---
-title: "Post Template 04 - MATH"
-excerpt: "Post Template 04 - MATH"
+title: "Post Template - MATH"
+excerpt: "Post Template - MATH"
 date: 2022-02-20 20:00:00 +0900
 header:
   overlay_image: /assets/images/unsplash-thomas-t-math.jpg
@@ -9,4 +9,4 @@ header:
 categories:
   - Template
 ---
-# Post Template 04 - MATH
+# Post Template - MATH

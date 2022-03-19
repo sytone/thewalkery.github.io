@@ -1,6 +1,6 @@
 ---
-title: "Post Template 03 - CODE"
-excerpt: "Post Template 03 - CODE"
+title: "Post Template - CODE"
+excerpt: "Post Template - CODE"
 date: 2022-02-19 20:00:00 +0900
 header:
   overlay_image: /assets/images/unsplash-emile-perron.jpg
@@ -9,4 +9,4 @@ header:
 categories:
   - Template
 ---
-# Post Template 03 - CODE
+# Post Template - CODE

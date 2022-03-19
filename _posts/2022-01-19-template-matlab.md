@@ -1,6 +1,6 @@
 ---
-title: "Post Template 02 - MATLAB"
-excerpt: "Post Template 02 - MATLAB"
+title: "Post Template - MATLAB"
+excerpt: "Post Template - MATLAB"
 date: 2022-01-19 22:00:00 +0900
 header:
   overlay_image: /assets/images/header-matlab.jpg
@@ -9,4 +9,4 @@ header:
 categories:
   - Template
 ---
-# Post Template 02 - MATLAB
+# Post Template - MATLAB
